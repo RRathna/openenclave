@@ -37,7 +37,8 @@ typedef struct _oe_sgx_enclave_image_info_t
 typedef struct _oe_sgx_enclave_flags_t
 {
     uint32_t capture_pf_gp_exceptions : 1;
-    uint32_t reserved : 31;
+    uint32_t create_zero_base_enclave : 1;
+    uint32_t reserved : 30;
 } oe_sgx_enclave_flags_t;
 
 typedef struct oe_sgx_enclave_config_t
@@ -54,6 +55,9 @@ typedef struct oe_sgx_enclave_config_t
 
     /* XSave Feature Request Mask */
     uint64_t xfrm;
+
+    /* Enclave start address. Currently valid only for 0-base enclave */
+    uint64_t start_address;
 } oe_sgx_enclave_config_t;
 
 /* Extends oe_enclave_properties_header_t base type */
@@ -65,13 +69,13 @@ typedef struct _oe_sgx_enclave_properties
     /* (32) */
     oe_sgx_enclave_config_t config;
 
-    /* (48) */
+    /* (96) */
     oe_sgx_enclave_image_info_t image_info;
 
-    /* (96)  */
+    /* (144)  */
     uint8_t sigstruct[OE_SGX_SIGSTRUCT_SIZE];
 
-    /* (1904) end-marker to make sure 0-filled signstruct doesn't get omitted */
+    /* (1960) end-marker to make sure 0-filled signstruct doesn't get omitted */
     uint64_t end_marker;
 } oe_sgx_enclave_properties_t;
 
@@ -82,6 +86,15 @@ typedef struct _oe_sgx_enclave_properties
 #define OE_MAKE_ATTRIBUTES(ALLOW_DEBUG, REQUIRE_KSS)                   \
     (OE_SGX_FLAGS_MODE64BIT | (ALLOW_DEBUG ? OE_SGX_FLAGS_DEBUG : 0) | \
      (REQUIRE_KSS ? OE_SGX_FLAGS_KSS : 0))
+
+#define OE_ADDRESS_ZERO 0x0
+
+/* Define ex_feature constants - have to updated with new feature additions */
+#define OE_ENCLAVE_CREATE_MAX_EX_FEATURES_COUNT 32
+#define OE_ENCLAVE_CREATE_EX_EL_RANGE_BIT_IDX 0
+#define OE_ENCLAVE_CREATE_EX_EL_RANGE \
+    (1 << OE_ENCLAVE_CREATE_EX_EL_RANGE_BIT_IDX) // Reserve Bit 0 for the
+                                                 // el_range
 
 // This macro initializes and injects an oe_sgx_enclave_properties_t struct
 // into the .oeinfo section.
@@ -108,6 +121,12 @@ typedef struct _oe_sgx_enclave_properties
  * @param[in] CAPTURE_PF_GP_EXCEPTIONS If true, allows the enclave to capture
  * #PF and #GP exceptions if the CPU supports the feature. The setting is
  * ignored otherwise
+ * @param[in] CREATE_ZERO_BASE_ENCLAVE If true, allows enclave to be created
+ * with a base address of 0x0. Else, the usual enclave creation logic is
+ * followed. Currently available only for SGX, linux.
+ * @param[in] ENCLAVE_START_ADDRESS If CREATE_ZERO_BASE_ENCLAVE is set, the
+ * enclave image start address. Must be higher than value in
+ * /proc/sys/vm/mmap_min_addr.
  * @param[in] HEAP_PAGE_COUNT Number of heap pages to allocate in the enclave
  * @param[in] STACK_PAGE_COUNT Number of stack pages per thread to reserve in
  * the enclave
@@ -124,6 +143,8 @@ typedef struct _oe_sgx_enclave_properties
     ALLOW_DEBUG,                                                          \
     REQUIRE_KSS,                                                          \
     CAPTURE_PF_GP_EXCEPTIONS,                                             \
+    CREATE_ZERO_BASE_ENCLAVE,                                             \
+    ENCLAVE_START_ADDRESS,                                                \
     HEAP_PAGE_COUNT,                                                      \
     STACK_PAGE_COUNT,                                                     \
     TCS_COUNT)                                                            \
@@ -148,11 +169,14 @@ typedef struct _oe_sgx_enclave_properties
             .flags =                                                      \
             {                                                             \
                 .capture_pf_gp_exceptions = CAPTURE_PF_GP_EXCEPTIONS,     \
+                .create_zero_base_enclave = CREATE_ZERO_BASE_ENCLAVE,     \
                 .reserved = 0                                             \
             },                                                            \
             .family_id = FAMILY_ID,                                       \
             .extended_product_id = EXTENDED_PRODUCT_ID,                   \
-            .attributes = OE_MAKE_ATTRIBUTES(ALLOW_DEBUG, REQUIRE_KSS)    \
+            .attributes = OE_MAKE_ATTRIBUTES(ALLOW_DEBUG, REQUIRE_KSS),   \
+            .start_address =                                              \
+                CREATE_ZERO_BASE_ENCLAVE ? ENCLAVE_START_ADDRESS : 0,     \
         },                                                                \
         .image_info =                                                     \
         {                                                                 \
@@ -198,6 +222,8 @@ typedef struct _oe_sgx_enclave_properties
     ALLOW_DEBUG,                                                          \
     false,                                                                \
     0,                                                                    \
+    false,                                                                \
+    0,                                                                    \
     HEAP_PAGE_COUNT,                                                      \
     STACK_PAGE_COUNT,                                                     \
     TCS_COUNT)
@@ -224,6 +250,12 @@ typedef struct _oe_sgx_enclave_properties
  * @param[in] CAPTURE_PF_GP_EXCEPTIONS If true, allows the enclave to capture
  * #PF and #GP exceptions if the CPU supports the feature. The setting is
  * ignored otherwise (SGX2 feature)
+ * @param[in] CREATE_ZERO_BASE_ENCLAVE If true, allows the enclave to be
+ * created with base address of 0x0. Else, the usual enclave creation logic
+ * is followed.
+ * @param[in] ENCLAVE_START_ADDRESS If CREATE_ZERO_BASE_ENCLAVE is set, the
+ * enclave image start address. Must be higher than value in
+ * /proc/sys/vm/mmap_min_addr.
  * @param[in] HEAP_PAGE_COUNT Number of heap pages to allocate in the enclave
  * @param[in] STACK_PAGE_COUNT Number of stack pages per thread to reserve in
  * the enclave
@@ -237,6 +269,8 @@ typedef struct _oe_sgx_enclave_properties
     ALLOW_DEBUG,                                                          \
     CAPTURE_PF_GP_EXCEPTIONS,                                             \
     REQUIRE_KSS,                                                          \
+    CREATE_ZERO_BASE_ENCLAVE,                                             \
+    ENCLAVE_START_ADDRESS,                                                \
     HEAP_PAGE_COUNT,                                                      \
     STACK_PAGE_COUNT,                                                     \
     TCS_COUNT)                                                            \
@@ -248,6 +282,8 @@ typedef struct _oe_sgx_enclave_properties
     ALLOW_DEBUG,                                                          \
     REQUIRE_KSS,                                                          \
     CAPTURE_PF_GP_EXCEPTIONS,                                             \
+    CREATE_ZERO_BASE_ENCLAVE,                                             \
+    ENCLAVE_START_ADDRESS,                                                \
     HEAP_PAGE_COUNT,                                                      \
     STACK_PAGE_COUNT,                                                     \
     TCS_COUNT)
