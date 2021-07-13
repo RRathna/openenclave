@@ -7,23 +7,6 @@
 #include <iostream>
 #include "sgx_zerobase_t.h"
 
-int test_enclave_mmap(uint64_t addr)
-{
-    void* loc = mmap(
-        (void*)addr,
-        1,
-        PROT_READ | PROT_WRITE,
-        MAP_SHARED | MAP_ANONYMOUS,
-        -1,
-        0);
-
-    if (loc != (void*)addr)
-        return 1;
-
-    munmap(loc, 1);
-    return 0;
-}
-
 int test_ecall(const char* message)
 {
     if (!message)

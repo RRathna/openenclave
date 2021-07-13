@@ -9,8 +9,6 @@ enclave {
     trusted {
         public int test_ecall(
             [in, string] const char* src);
-        public int test_enclave_mmap(
-            uint64_t addr);
     };
 
     untrusted {
