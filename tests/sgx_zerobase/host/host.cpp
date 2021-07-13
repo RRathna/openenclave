@@ -115,34 +115,13 @@ int main(int argc, const char* argv[])
         stdout,
         "\nTest 5: Check enclave access to [enclave_image_start_address, "
         "enclave_image_end_address]\n"
-        "Expected result : successful\n");
-
-    addr = 0x35000;
-    OE_TEST(test_enclave_mmap(enclave, &res, addr) == OE_OK);
-    if (res != 0)
-    {
-        fprintf(stderr, "enclave mmap at address %lx failed\n", addr);
-        return 1;
-    }
-
-    fprintf(
-        stdout,
-        "\nTest 6: Check host access to 0x0\n"
         "Expected result : failed\n");
 
     addr = 0x0;
 
-    if (!test_host_mmap(addr))
+    if (test_host_mmap(addr) == 0)
     {
-        fprintf(stderr, "host mmap at address %lx failed\n", addr);
-    }
-    else
-        return 1;
-
-    OE_TEST(test_enclave_mmap(enclave, &res, addr) == OE_OK);
-    if (res != 0)
-    {
-        fprintf(stderr, "enclave mmap at address %lx failed\n", addr);
+        fprintf(stderr, "host mmap at address %lx succeeded\n", addr);
         return 1;
     }
 
