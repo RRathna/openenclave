@@ -38,7 +38,7 @@ typedef struct _debug_enclave_t
     uint64_t path_length;
 
     // The address at which the enclave has been loaded.
-    const void* base_address;
+    const void* start_address;
     uint64_t size;
 
     // Array of TCS addresses.
@@ -57,7 +57,7 @@ OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_enclave_t, version) == 8);
 OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_enclave_t, next) == 16);
 OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_enclave_t, path) == 24);
 OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_enclave_t, path_length) == 32);
-OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_enclave_t, base_address) == 40);
+OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_enclave_t, start_address) == 40);
 OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_enclave_t, size) == 48);
 OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_enclave_t, tcs_array) == 56);
 OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_enclave_t, tcs_count) == 64);

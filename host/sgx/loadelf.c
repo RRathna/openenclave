@@ -1202,7 +1202,7 @@ static oe_result_t _get_debug_modules(
             OE_RAISE(OE_OUT_OF_MEMORY);
         debug_module->path_length = strlen(debug_module->path);
 
-        debug_module->base_address =
+        debug_module->start_address =
             (void*)(enclave->start_address + image->submodule->image_rva);
         debug_module->size = image->submodule->image_size;
 

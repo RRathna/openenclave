@@ -30,8 +30,8 @@ volatile uint64_t ENCLAVE_SIZEOF_PATH = (uint64_t)-1;
 volatile uint64_t ENCLAVE_OFFSETOF_PATH_LENGTH = (uint64_t)-1;
 volatile uint64_t ENCLAVE_SIZEOF_PATH_LENGTH = (uint64_t)-1;
 
-volatile uint64_t ENCLAVE_OFFSETOF_BASE_ADDRESS = (uint64_t)-1;
-volatile uint64_t ENCLAVE_SIZEOF_BASE_ADDRESS = (uint64_t)-1;
+volatile uint64_t ENCLAVE_OFFSETOF_START_ADDRESS = (uint64_t)-1;
+volatile uint64_t ENCLAVE_SIZEOF_START_ADDRESS = (uint64_t)-1;
 
 volatile uint64_t ENCLAVE_OFFSETOF_SIZE = (uint64_t)-1;
 volatile uint64_t ENCLAVE_SIZEOF_SIZE = (uint64_t)-1;
@@ -66,8 +66,8 @@ volatile uint64_t MODULE_SIZEOF_PATH = (uint64_t)-1;
 volatile uint64_t MODULE_OFFSETOF_PATH_LENGTH = (uint64_t)-1;
 volatile uint64_t MODULE_SIZEOF_PATH_LENGTH = (uint64_t)-1;
 
-volatile uint64_t MODULE_OFFSETOF_BASE_ADDRESS = (uint64_t)-1;
-volatile uint64_t MODULE_SIZEOF_BASE_ADDRESS = (uint64_t)-1;
+volatile uint64_t MODULE_OFFSETOF_START_ADDRESS = (uint64_t)-1;
+volatile uint64_t MODULE_SIZEOF_START_ADDRESS = (uint64_t)-1;
 
 volatile uint64_t MODULE_OFFSETOF_SIZE = (uint64_t)-1;
 volatile uint64_t MODULE_SIZEOF_SIZE = (uint64_t)-1;
@@ -99,11 +99,11 @@ void assert_debugger_binary_contract_host_side()
         OE_SIZEOF(oe_debug_enclave_t, path_length));
 
     OE_TEST(
-        ENCLAVE_OFFSETOF_BASE_ADDRESS ==
-        OE_OFFSETOF(oe_debug_enclave_t, base_address));
+        ENCLAVE_OFFSETOF_START_ADDRESS ==
+        OE_OFFSETOF(oe_debug_enclave_t, start_address));
     OE_TEST(
-        ENCLAVE_SIZEOF_BASE_ADDRESS ==
-        OE_SIZEOF(oe_debug_enclave_t, base_address));
+        ENCLAVE_SIZEOF_START_ADDRESS ==
+        OE_SIZEOF(oe_debug_enclave_t, start_address));
 
     OE_TEST(ENCLAVE_OFFSETOF_SIZE == OE_OFFSETOF(oe_debug_enclave_t, size));
     OE_TEST(ENCLAVE_SIZEOF_SIZE == OE_SIZEOF(oe_debug_enclave_t, size));
@@ -151,11 +151,11 @@ void assert_debugger_binary_contract_host_side()
         MODULE_SIZEOF_PATH_LENGTH == OE_SIZEOF(oe_debug_module_t, path_length));
 
     OE_TEST(
-        MODULE_OFFSETOF_BASE_ADDRESS ==
-        OE_OFFSETOF(oe_debug_module_t, base_address));
+        MODULE_OFFSETOF_START_ADDRESS ==
+        OE_OFFSETOF(oe_debug_module_t, start_address));
     OE_TEST(
-        MODULE_SIZEOF_BASE_ADDRESS ==
-        OE_SIZEOF(oe_debug_module_t, base_address));
+        MODULE_SIZEOF_START_ADDRESS ==
+        OE_SIZEOF(oe_debug_module_t, start_address));
 
     OE_TEST(MODULE_OFFSETOF_SIZE == OE_OFFSETOF(oe_debug_module_t, size));
     OE_TEST(MODULE_SIZEOF_SIZE == OE_SIZEOF(oe_debug_module_t, size));

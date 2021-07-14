@@ -87,9 +87,6 @@ def bp_assert_debugger_binary_contract_host_side(frame, bp_loc, dict):
     lldb_expr("ENCLAVE_OFFSETOF_PATH_LENGTH = " + str(oe_debug_enclave_t.OFFSETOF_PATH_LENGTH))
     lldb_expr("ENCLAVE_SIZEOF_PATH_LENGTH = " + str(oe_debug_enclave_t.SIZEOF_PATH_LENGTH))
 
-    lldb_expr("ENCLAVE_OFFSETOF_BASE_ADDRESS = " + str(oe_debug_enclave_t.OFFSETOF_BASE_ADDRESS))
-    lldb_expr("ENCLAVE_SIZEOF_BASE_ADDRESS = " + str(oe_debug_enclave_t.SIZEOF_BASE_ADDRESS))
-
     lldb_expr("ENCLAVE_OFFSETOF_SIZE = " + str(oe_debug_enclave_t.OFFSETOF_SIZE))
     lldb_expr("ENCLAVE_SIZEOF_SIZE = " + str(oe_debug_enclave_t.SIZEOF_SIZE))
 
@@ -125,8 +122,8 @@ def bp_assert_debugger_binary_contract_host_side(frame, bp_loc, dict):
     lldb_expr("MODULE_OFFSETOF_PATH_LENGTH = " + str(oe_debug_module_t.OFFSETOF_PATH_LENGTH))
     lldb_expr("MODULE_SIZEOF_PATH_LENGTH = " + str(oe_debug_module_t.SIZEOF_PATH_LENGTH))
 
-    lldb_expr("MODULE_OFFSETOF_BASE_ADDRESS = " + str(oe_debug_module_t.OFFSETOF_BASE_ADDRESS))
-    lldb_expr("MODULE_SIZEOF_BASE_ADDRESS = " + str(oe_debug_module_t.SIZEOF_BASE_ADDRESS))
+    lldb_expr("MODULE_OFFSETOF_START_ADDRESS = " + str(oe_debug_module_t.OFFSETOF_START_ADDRESS))
+    lldb_expr("MODULE_SIZEOF_START_ADDRESS = " + str(oe_debug_module_t.SIZEOF_START_ADDRESS))
 
     lldb_expr("MODULE_OFFSETOF_SIZE = " + str(oe_debug_module_t.OFFSETOF_SIZE))
     lldb_expr("MODULE_SIZEOF_SIZE = " + str(oe_debug_module_t.SIZEOF_SIZE))

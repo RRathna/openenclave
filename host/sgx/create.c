@@ -1034,7 +1034,7 @@ oe_result_t oe_sgx_build_enclave(
         debug_enclave->path = enclave->path;
         debug_enclave->path_length = strlen(enclave->path);
 
-        debug_enclave->base_address = (void*)enclave->start_address;
+        debug_enclave->start_address = (void*)enclave->start_address;
         debug_enclave->size = enclave->size;
 
         debug_enclave->tcs_array =

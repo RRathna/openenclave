@@ -54,7 +54,7 @@ typedef struct _debug_module_t
     uint64_t path_length;
 
     // The address at which the module has been loaded.
-    const void* base_address;
+    const void* start_address;
     uint64_t size;
 
     // The enclave to which this module belongs.
@@ -66,7 +66,7 @@ OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_module_t, version) == 8);
 OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_module_t, next) == 16);
 OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_module_t, path) == 24);
 OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_module_t, path_length) == 32);
-OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_module_t, base_address) == 40);
+OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_module_t, start_address) == 40);
 OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_module_t, size) == 48);
 OE_STATIC_ASSERT(OE_OFFSETOF(oe_debug_module_t, enclave) == 56);
 

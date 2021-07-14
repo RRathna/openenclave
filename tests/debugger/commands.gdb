@@ -92,9 +92,6 @@ commands 5
     python gdb.parse_and_eval("ENCLAVE_OFFSETOF_PATH_LENGTH = " + str(oe_debug_enclave_t.OFFSETOF_PATH_LENGTH))
     python gdb.parse_and_eval("ENCLAVE_SIZEOF_PATH_LENGTH = " + str(oe_debug_enclave_t.SIZEOF_PATH_LENGTH))
 
-    python gdb.parse_and_eval("ENCLAVE_OFFSETOF_BASE_ADDRESS = " + str(oe_debug_enclave_t.OFFSETOF_BASE_ADDRESS))
-    python gdb.parse_and_eval("ENCLAVE_SIZEOF_BASE_ADDRESS = " + str(oe_debug_enclave_t.SIZEOF_BASE_ADDRESS))
-
     python gdb.parse_and_eval("ENCLAVE_OFFSETOF_SIZE = " + str(oe_debug_enclave_t.OFFSETOF_SIZE))
     python gdb.parse_and_eval("ENCLAVE_SIZEOF_SIZE = " + str(oe_debug_enclave_t.SIZEOF_SIZE))
 
@@ -130,8 +127,8 @@ commands 5
     python gdb.parse_and_eval("MODULE_OFFSETOF_PATH_LENGTH = " + str(oe_debug_module_t.OFFSETOF_PATH_LENGTH))
     python gdb.parse_and_eval("MODULE_SIZEOF_PATH_LENGTH = " + str(oe_debug_module_t.SIZEOF_PATH_LENGTH))
 
-    python gdb.parse_and_eval("MODULE_OFFSETOF_BASE_ADDRESS = " + str(oe_debug_module_t.OFFSETOF_BASE_ADDRESS))
-    python gdb.parse_and_eval("MODULE_SIZEOF_BASE_ADDRESS = " + str(oe_debug_module_t.SIZEOF_BASE_ADDRESS))
+    python gdb.parse_and_eval("MODULE_OFFSETOF_START_ADDRESS = " + str(oe_debug_module_t.OFFSETOF_START_ADDRESS))
+    python gdb.parse_and_eval("MODULE_SIZEOF_START_ADDRESS = " + str(oe_debug_module_t.SIZEOF_START_ADDRESS))
 
     python gdb.parse_and_eval("MODULE_OFFSETOF_SIZE = " + str(oe_debug_module_t.OFFSETOF_SIZE))
     python gdb.parse_and_eval("MODULE_SIZEOF_SIZE = " + str(oe_debug_module_t.SIZEOF_SIZE))
